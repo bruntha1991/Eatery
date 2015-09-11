@@ -1,4 +1,4 @@
-package eatery;
+package eatery.filter;
 
 import com.optimaize.langdetect.LanguageDetector;
 import com.optimaize.langdetect.LanguageDetectorBuilder;
@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by bruntha on 6/5/15.
  */
-public class LanguageDetect implements Runnable{
+public class LanguageDetect {
 
     public boolean isEnglish(String review)
     {
@@ -37,8 +37,5 @@ public class LanguageDetect implements Runnable{
         return CommonTextObjectFactories.forDetectingShortCleanText().forText( text );
     }
 
-    @Override
-    public void run() {
 
-    }
 }

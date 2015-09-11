@@ -3,6 +3,7 @@ package eatery;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,8 +18,8 @@ public class Annotation {
             "review_100_D_Review.ann";  //annotation of the file that need to be annotated
     final String inputAnnFile = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "review.ann";
-    final String filePathFoodNames = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "food.txt";
+    final String filePathFoodNames = "/home/bruntha/Documents/FYP/Data/Foodlist/" +
+            "Beverage_Sorted.txt";
     final String filePathDictionary = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "dictionary.txt";
 
@@ -33,6 +34,10 @@ public class Annotation {
     ArrayList<String> listOfItems = new ArrayList<>();
     Hashtable<String, String> taggedItems = new Hashtable<>();
     Hashtable<String, String> dictionaryHashtable = new Hashtable<>(); //<key=word,value=tag>
+    private ArrayList<String> words=new ArrayList();
+    private ArrayList<String> tags=new ArrayList();
+    private ArrayList<String> dictionary=new ArrayList();
+    StanfordLemmatizer stanfordLemmatizer = new StanfordLemmatizer();
 
     public static void main(String[] args) {
 
@@ -53,7 +58,7 @@ public class Annotation {
     public void annotateUsingAnnFile() {
         try {
             updateDictionary();
-            loadDictionary();
+            loadDictionary(filePathDictionaryAuto);
             loadTags();
             tagCount = noOfTagsAlreadyMax;
             readFileForAnnotation(filePathDictionaryAuto);
@@ -66,11 +71,64 @@ public class Annotation {
         try {
             loadTags();
             tagCount = noOfTagsAlreadyMax;
-            tag("F_FoodItem");
+            tag("F_Drinks",filePathFoodNames);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void populateDictionary() {
+        try {
+            loadDictionary(filePathDictionary);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < dictionary.size(); i++) {
+            if (!dictionary.get(i).contains(" ")) {
+                populateByStemmer(dictionaryHashtable.get(dictionary.get(i)), dictionary.get(i));
+            }
+        }
+    }
+
+    private void populateByStemmer(String tag, String word) {
+        List<String> x = stanfordLemmatizer.lemmatize(word);
+
+        for (int i = 0; i < x.size(); i++) {
+            if (!dictionaryHashtable.containsKey(x.get(i).toLowerCase())) {
+                dictionaryHashtable.put(x.get(i).toLowerCase(),tag);
+                System.out.println("Stemmer: "+word+" "+x.get(i));
+                String lineToAdd = tag + " " + x.get(i);
+                writePrintStream(lineToAdd,filePathDictionary);
+            }
+
+        }
+
+
+    }
+
+//    private void loadDictionary() throws IOException {
+//        File fileAnnotation = new File(filePathDictionary);
+//        FileReader fr = new FileReader(fileAnnotation);
+//        BufferedReader br = new BufferedReader(fr);
+//        String line;
+//
+//        while ((line = br.readLine()) != null) {
+//            int index=line.indexOf(" ");
+//            String tag=line.substring(0,index);
+//            String word=line.substring(index+1);
+//
+//            words.add(word);
+//            tags.add(tag);
+//        }
+//
+//        for (int i = 0; i < tags.size(); i++) {
+//            populateByStemmer(tags.get(i), words.get(i));
+//        }
+//        br.close();
+//        fr.close();
+//        System.out.println("Done");
+//    }
 
     private void readFileForAnnotation(String file) throws IOException {
         File fileAnnotation = new File(file);
@@ -102,8 +160,8 @@ public class Annotation {
         fileStream.close();
     }
 
-    private void loadDictionary() throws IOException {
-        File fileAnnotation = new File(filePathDictionaryAuto);
+    private void loadDictionary(String path) throws IOException {
+        File fileAnnotation = new File(path);
         FileReader fr = new FileReader(fileAnnotation);
         BufferedReader br = new BufferedReader(fr);
         String line;
@@ -112,6 +170,7 @@ public class Annotation {
             String[] dic = line.split("[ \t]");
             String word = line.substring(line.indexOf(" ") + 1);
             dictionaryHashtable.put(word.toLowerCase(), dic[0]);
+            dictionary.add(word.toLowerCase());
             System.out.println("Loading dictionary : Word: " + word + "\tTag: " + dic[0]);
         }
         br.close();
@@ -147,7 +206,7 @@ public class Annotation {
 
     private void updateDictionary() {
         try {
-            loadDictionary();
+            loadDictionary(filePathDictionary);
             upgradeDictionary();
         } catch (IOException e) {
             e.printStackTrace();
@@ -158,8 +217,8 @@ public class Annotation {
 
 
 
-    private void tag(String tag) throws IOException {
-        File fileAnnotation = new File(filePathFoodNames);
+    private void tag(String tag,String path) throws IOException {
+        File fileAnnotation = new File(path);
         FileReader fr = new FileReader(fileAnnotation);
         BufferedReader br = new BufferedReader(fr);
         String line;
@@ -224,8 +283,24 @@ public class Annotation {
 
                 if (!alreadyAnnotated((currentIndex + indexTotal) + "-" + (currentIndex + indexTotal + item.length()), tag, line.substring(currentIndex, matcher.end()))) {
                     String newAnnotation = "T" + ++tagCount + "\t" + tag + " " + (currentIndex + indexTotal) + " " + (currentIndex + indexTotal + item.length()) + "\t" + line.substring(currentIndex, matcher.end());
+
+                    String word = line.substring(currentIndex, matcher.end());
+                    String[] words = word.split(" ");
+                    int start = (currentIndex + indexTotal);
+
+                    if (words.length != 0) {
+                        for (int i = 0; i < words.length; i++) {
+                            int end = start + words[i].length();
+                            taggedItems.put(start + "-" + end, tag);
+                            start = end + 1;
+                        }
+                    }
+
+                    taggedItems.put((currentIndex + indexTotal) + "-" + (currentIndex + indexTotal + item.length()), tag);
+
+
                     System.out.println(newAnnotation);
-                    writePrintStream(newAnnotation);
+                    writePrintStream(newAnnotation,filePathAlreadyAnnotated_Ann);
                 }
             }
             indexTotal += line.length() + 1;
@@ -239,15 +314,15 @@ public class Annotation {
     public boolean alreadyAnnotated(String indeces, String tag, String word) {
         if (taggedItems.containsKey(indeces)) {
             if (!tag.equals(taggedItems.get(indeces)))
-                System.out.println("Conflict : " + word + " Old tag: " + tag + " New tag: " + taggedItems.get(indeces));
+                System.out.println("Conflict : " + word + " Old tag: " + taggedItems.get(indeces) + " New tag: " + tag);
             return true;
         } else
             return false;
     }
 
-    public synchronized void writePrintStream(String line) {
+    public synchronized void writePrintStream(String line,String path) {
         PrintStream fileStream = null;
-        File file = new File(filePathAlreadyAnnotated_Ann);
+        File file = new File(path);
 
         try {
             fileStream = new PrintStream(new FileOutputStream(file, true));

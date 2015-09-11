@@ -4,6 +4,7 @@ package eatery;
  * Created by bruntha on 8/6/15.
  */
 
+import domain.Syn;
 import edu.smu.tspell.wordnet.NounSynset;
 import edu.smu.tspell.wordnet.Synset;
 import edu.smu.tspell.wordnet.SynsetType;
@@ -55,6 +56,24 @@ public class WordNet {
             for (String synonym : synonyms) {
                 if (!result.contains(synonym)) {
                     result.add(synonym);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<Syn> getNounSynonymsWTagCount(String noun) {
+        List<Syn> result = new ArrayList<Syn>();
+        List<String> resultStringList = new ArrayList<String>();
+        Synset[] synsets = database.getSynsets(noun, SynsetType.NOUN);
+        for (Synset synset : synsets) {
+            String[] synonyms = ((NounSynset) synset).getWordForms();
+            for (String synonym : synonyms) {
+                Syn syn=new Syn(synset.getTagCount(synonym),synonym);
+
+                if (!resultStringList.contains(synonym)) {
+                    resultStringList.add(synonym);
+                    result.add(syn);
                 }
             }
         }

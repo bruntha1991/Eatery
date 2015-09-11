@@ -1,4 +1,4 @@
-package eatery;
+package eatery.filter;
 
 import org.json.simple.JSONObject;
 
