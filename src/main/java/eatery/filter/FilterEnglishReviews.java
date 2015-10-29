@@ -136,7 +136,7 @@ public class FilterEnglishReviews {
             if (!matcher.find()) {
                 isEnglish = false;
             } else {
-                isEnglish = languageDetect.isEnglish(review); //checking whether review is english or not
+                isEnglish = languageDetect.isSentenceEnglish(review); //checking whether review is english or not
             }
             System.out.println("Review " + (totalReviewsViewed + 1) + " is English = " + isEnglish);
             if (isEnglish) {

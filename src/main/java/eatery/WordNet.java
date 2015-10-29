@@ -17,18 +17,15 @@ public class WordNet {
 
     private WordNetDatabase database;
 
+    public static void main(String args[]) {
+        WordNet wordNet=new WordNet();
+        wordNet.getNounHypernym("love");
+    }
+
+
     public WordNet() {
         System.setProperty("wordnet.database.dir", "/home/bruntha/Documents/Softwares/dict");
         database = WordNetDatabase.getFileInstance();
-    }
-
-    public List<NounSynset[]> getNounHyponyms(String noun) {
-        List<NounSynset[]> result = new ArrayList<NounSynset[]>();
-        Synset[] synsets = database.getSynsets(noun, SynsetType.NOUN);
-        for (Synset synset : synsets) {
-            result.add(((NounSynset) synset).getHyponyms());
-        }
-        return result;
     }
 
     public List<NounSynset[]> getNounHypernym(String noun) {
@@ -36,6 +33,16 @@ public class WordNet {
         Synset[] synsets = database.getSynsets(noun, SynsetType.NOUN);
         for (Synset synset : synsets) {
             result.add(((NounSynset) synset).getHypernyms());
+//            System.out.println(synset.+" "+synset.getDefinition());
+        }
+        return result;
+    }
+
+    public List<NounSynset[]> getNounHyponyms(String noun) {
+        List<NounSynset[]> result = new ArrayList<NounSynset[]>();
+        Synset[] synsets = database.getSynsets(noun, SynsetType.NOUN);
+        for (Synset synset : synsets) {
+            result.add(((NounSynset) synset).getHyponyms());
         }
         return result;
     }

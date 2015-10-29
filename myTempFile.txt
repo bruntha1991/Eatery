@@ -1,0 +1,354 @@
+Food breakfast
+A_Furniture tables
+S_Staff server
+Food food
+Service service
+Food meal
+S_Staff staff
+Food seafood
+S_Parking parking
+S_Staff waitress
+S_Staff hostess
+S_Menu menu
+A_Plc_Bar bar
+A_Ent_Tv tvs
+A_Plc_Patio patio
+Ambience ambiance
+F_Dessert dessert
+A_Ent_LiveShow dancers
+Food lunch
+Food lunches
+Ambience atmosphere
+Restaurant cafe
+S_Staff waiter
+O_Reservation reservation
+Food dinner
+F_FoodItem salad of watermelon and dragon fruit
+F_FoodItem passion fruit
+F_FoodItem basil
+F_FoodItem paprika-tomato meringue
+F_FoodItem smoked salmon
+F_FoodItem black olive agar
+F_FoodItem ginger sable
+F_FoodItem glazed skate
+F_FoodItem red miso water
+F_FoodItem spring vegetables
+F_FoodItem paris mushroom duxelle
+F_FoodItem grilled prawn
+F_FoodItem spinach velout
+F_FoodItem garlic
+F_FoodItem parmesan
+F_FoodItem lobster
+F_FoodItem poached turnip
+F_FoodItem toasted sesame
+F_FoodItem bisque
+F_FoodItem soft-boiled egg
+F_FoodItem ossetra caviar
+F_FoodItem marinated clams
+F_FoodItem red ahi tuna
+F_FoodItem cuttlefish
+F_FoodItem mediterranean john dory
+F_FoodItem pink pepper
+F_FoodItem foie gras tart
+F_FoodItem baby artichokes
+F_FoodItem palate cleanser
+F_Dessert sorbet
+F_FoodItem cucumber
+F_FoodItem campari soaked red beet
+F_FoodItem sonoma valley duck breast
+F_FoodItem alexia potato
+F_FoodItem piquillo pepper
+F_FoodItem tart fruit
+F_FoodItem pepper
+F_Drinks coffee panna cotta
+F_Drinks coffee
+F_FoodItem lime sorbet
+F_FoodItem almond-frangipane cake
+F_FoodItem emon-krisch syrup
+F_FoodItem strawberry soup
+F_FoodItem raspberry
+F_FoodItem coconut tartlet
+F_FoodItem iced coconut
+F_FoodItem cilantro
+F_FoodItem celery curls
+F_FoodItem chocolate ganache
+F_Dessert desserts
+F_FoodItem coconut
+F_FoodItem celery
+F_Drinks iced tea
+S_Staff servers
+Restaurant restaurant
+A_OutsideView view
+W_Price worth
+Food foods
+F_FoodItem pizza
+F_FI_Price price
+F_FoodItem garlic bread
+A_Entertainment games
+A_Place counter space
+A_Decor walls
+F_FoodItem burgers
+A_Environment environment
+F_Ingredients sugar
+F_FoodItem french fries
+Restaurant this place
+F_FoodItem zuppa di cozze
+F_FoodItem vongole
+F_FoodItem pollo scarpariello
+F_FoodItem penne alla vodca
+F_FoodItem pork chop
+A_Places inside
+F_FoodItem spinach
+F_FoodItem egg crepe
+F_FoodItem crepe
+F_FoodItem strawberries
+F_FoodItem dark chocolate
+F_FoodItem organic hamburger
+F_FoodItem fries
+F_FoodItem burger
+F_FoodItem coal burger
+F_FoodItem meat
+F_FoodItem bun
+P_F_FI_Size small
+F_FoodItem sandwich
+F_Drinks beer
+F_Drinks beers
+F_FoodItem onion rings
+F_FoodItem bbq
+F_FoodItem pork sandwich
+S_Staff manager
+A_Environment in there
+F_FoodItem bbq chicken sandwich
+F_FoodItem cole slaw
+F_FoodItem shredded chicken
+F_FoodItem chicken
+S_Staff employee
+A_Plc_RestRoom restroom
+F_FoodItem banana muffins
+F_FoodItem chocolate chip cookie
+F_FoodItem orange scone
+F_FoodItem broccoli cheddar soup
+F_Appetizer shell fish appetizer
+F_Appetizer appetizer
+F_FoodItem wagyu beef skirt steak
+F_FoodItem beef wellington
+S_Cutlery knives
+F_FoodItem cocktails
+F_FoodItem deviled eggs
+F_FoodItem peppers
+F_FoodItem flatbread
+S_Staff chef
+F_Drinks drinks
+Restaurants restaurants
+F_FoodItem chicken katsu
+F_FoodItem bbq short ribs
+F_FoodItem bbq chicken
+Restaurant place
+F_Drinks craft beers
+S_Staff bartenders
+S_Staff bartender
+F_FoodItem wings
+F_Drinks juices
+F_Drinks brewed tea
+F_Drinks tea
+F_FoodItem beans
+F_FoodItem vegan burger
+F_FoodItem portabella mushrooms
+F_FoodItem potato fries
+W_Price prices
+F_FoodItem bake pizza
+F_FoodItem tofu scramble
+F_FoodItem french toast
+F_FoodItem vegan cinnamon roll
+S_Staff owner
+F_Ingredients ingredients
+F_FoodItem burrito
+F_FoodItem tofu tamari english muffin
+F_FoodItem rolls
+F_FoodItem fish
+W_Price pricing
+F_FoodItem sushi
+S_Staff hostesses
+F_FoodItem bbq nachos
+F_FoodItem cheddar cheese grits
+F_FoodItem fried catfish sandwich
+F_FoodItem crackling pork shank
+F_FoodItem bbq brisket
+F_Appetizer appetizers
+F_FoodItem meatloaf
+F_FoodItem nacho boulder
+F_FoodItem catfish
+F_FoodItem brisket
+F_FoodItem cheese grits
+A_Ent_LiveShow live band
+F_FoodItem greasy hawaiian bbq
+A_Decor interior
+F_FoodItem caesar salad
+F_FoodItem shrimp rolls
+F_FoodItem polynesian chicken sandwich
+F_FoodItem caesar salads
+Food diners
+A_Decor decorations
+A_Decor decor
+F_Drinks giant scorpion bowl
+F_FoodItem pasta
+S_Staff franco
+F_FoodItem meatballs
+F_FoodItem meatball
+F_FoodItem chicken parm
+F_FoodItem chicken breast
+F_FoodItem penne alla puttanesca
+F_Ingredients capers
+F_Ingredients olives
+F_Ingredients peas
+F_FoodItem puttanesca
+F_Dessert tiramisu
+F_FoodItem garlic rice
+A_Places space
+W_Price priced
+F_FoodItem salsa
+F_FoodItem chips
+F_FoodItem guacamole
+Food portion
+F_FoodItem swordfish tacos
+F_FoodItem tacos
+F_FoodItem slaw
+F_FoodItem chicken enchilada
+F_FoodItem guacomole
+F_FoodItem salsas
+F_FoodItem enchiladas
+S_Staff waiters
+F_FoodItem mercadito's guac
+O_Experience dining experiences
+P_S_Stf_Behavior great
+F_FoodItem canap
+P_F_FI_Taste quite interesting
+P_F_FI_Quality shabby
+P_F_FI_Taste excellent
+P_F_FI_Taste fantastic
+P_F_FI_Taste wonderful
+F_FoodItem berries
+P_O_Experience best
+Restaurant there
+S_Staff david
+P_S_Stf_Behavior smile
+P_S_Stf_Behavior funny
+P_F_FoodItem pretty good
+P_F_FI_Price inflated
+P_F_FI_Quality decent
+P_Restaurant very good
+F_FoodItem calamari in umido
+P_F_FoodItem very goo
+O_Experience experience
+P_O_Experience nice
+P_A_Places very cramped
+P_A_Places hot
+P_S_Stf_Behavior friendlier
+P_F_FI_Size huge
+P_Service fast
+P_Service polite
+P_F_FoodItem perfect
+P_S_Del_Time fairly quickly
+P_F_FI_Taste delicious
+P_F_FI_Taste tasty
+P_W_Price very underwhelming
+P_A_Entertainment clean
+P_Service good
+P_F_FI_CookingLevel dry
+P_F_FI_Price overpriced
+P_Food actually pretty good
+P_Food very very good
+P_F_FI_Taste delish
+S_Stf_Behavior acted
+P_Ambience awesome
+P_S_Stf_Behavior friendly
+P_F_FI_Taste amazing
+Service very well
+P_S_Stf_Behavior extremely nice
+P_S_Stf_Experience accommodating
+A_Decor lights
+P_A_Decor cold
+P_A_Decor hard
+P_A_Decor white
+P_A_Decor un-inviting
+A_Decor lighting
+P_A_Decor terrible
+P_F_FI_CookingLevel warm
+P_F_FI_CookingLevel luke warm
+Restaurant honey bear's
+P_Restaurant better
+P_F_FI_Quality fresh fresh
+S_Stf_Behavior really nice
+P_Food really great
+P_Food ok
+P_F_Drinks eh
+P_F_FI_Price high
+P_F_FoodItem incredible
+P_S_Stf_Behavior super warm
+P_Food very fresh
+Offers happy hour
+P_S_Stf_Experience knowledgeable
+P_F_FI_Taste very tasty
+P_Restaurant worst
+P_W_Price reasonable
+P_F_FI_CookingLevel freshly
+P_F_FI_Taste salty
+P_Food meh
+P_Service prompt
+P_Ambience classic
+P_F_FI_CookingLevel perfectly
+F_FI_CookingLevel cooked
+F_FI_Taste taste
+P_F_FI_Taste average
+P_S_Staff fabulous
+F_FI_Taste flavor
+F_Appetizer bites
+F_FoodItem bigarrde sauce
+F_FI_Taste flavors
+A_Environment classy
+O_Payment o
+A_Furniture stools
+S_Delivery order
+F_FoodItem bagels
+F_Ingredients panera
+P_O_Experience plan to come back
+F_FI_Size regular
+O_Payment paid
+P_F_FI_Taste missing flavo
+P_A_Environment sounded
+P_A_Plc_RestRoom smelled
+P_F_FI_Size not large
+Service treat
+P_F_FI_Taste full of flavor
+P_Restaurant love
+P_S_Stf_Behavior rude
+P_Ambience great spot
+F_FI_Taste deliciousness
+P_F_FI_Size slimy
+P_S_Stf_Behavior exceptional
+P_Food sweet
+S_Del_Time time
+P_A_Environment cleanliness
+F_FI_Quality quality
+S_Staff opener
+P_S_Stf_Behavior courteous
+P_S_Stf_Behavior enthusiastic
+F_FI_Price menu prices
+F_FI_Size quantity
+P_F_FI_Price high-priced
+P_S_Del_Time slow
+A_Env_AC air
+A_Env_AC airflow
+P_F_FoodItem messy
+P_O_Experience looking forward to checking
+P_A_Entertainment modern feel
+A_Decor themed
+P_A_Environment noisy
+A_Decor pictures
+P_O_Experience will go back
+F_FI_Taste fav
+A_Env_Type family
+P_F_FI_Price ridiculous
+F_FoodItem bread
+P_O_Experience won't go back
+P_O_Experience i'm happy

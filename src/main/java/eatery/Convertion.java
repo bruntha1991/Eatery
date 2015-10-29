@@ -1,5 +1,7 @@
 package eatery;
 
+import domain.Tag;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;

@@ -11,14 +11,34 @@ import java.io.IOException;
 /**
  * Created by bruntha on 6/5/15.
  */
-public class LanguageDetect {
+public class LanguageDetect {   //library language detect
 
-    public boolean isEnglish(String review)
+    public boolean isSentenceEnglish(String review)
     {
         boolean result=false;
         try {
             LanguageDetector detector = LanguageDetectorBuilder.create(NgramExtractors.standard())
                     .shortTextAlgorithm(0)
+                    .withProfiles(new LanguageProfileReader().readAllBuiltIn())
+                    .build();
+
+            if(detector.getProbabilities(text(review)).get(0).getLocale().getLanguage().equals("en"))
+            {
+                result=true;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean isWordEnglish(String review)
+    {
+        boolean result=false;
+        try {
+            LanguageDetector detector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+                    .shortTextAlgorithm(100)
                     .withProfiles(new LanguageProfileReader().readAllBuiltIn())
                     .build();
 

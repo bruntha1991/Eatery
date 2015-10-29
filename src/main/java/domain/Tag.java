@@ -1,4 +1,4 @@
-package eatery;
+package domain;
 
 /**
  * Created by bruntha on 7/10/15.
