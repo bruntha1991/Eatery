@@ -14,6 +14,7 @@
     <orderEntry type="library" name="jaws-bin" level="project" />
     <orderEntry type="library" name="wordnet-rita-0.0.1" level="project" />
     <orderEntry type="library" name="jawjaw-1.0.2" level="project" />
+    <orderEntry type="library" name="opennlp-tools-1.6.0" level="project" />
     <orderEntry type="library" name="Maven: net.arnx:jsonic:1.2.11" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:annotations:12.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:16.0.1" level="project" />
@@ -45,6 +46,6 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: edu.washington.cs.knowitall:opennlp-tokenize-models:1.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.uima:WhitespaceTokenizer:2.3.1" level="project" />
-    <orderEntry type="library" name="opennlp-tools-1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.2" level="project" />
   </component>
 </module>

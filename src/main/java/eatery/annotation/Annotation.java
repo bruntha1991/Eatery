@@ -17,27 +17,28 @@ public class Annotation {
     final String filePathDictionary = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "dictionary.txt";
 
-    final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_B_Review.txt";  //the file path that need to be annotated
+    final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+            "u_4.txt";  //the file path that need to be annotated
 
-    final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_B_Review.ann";  //annotation of the file that need to be annotated
+    final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+            "u_4.ann";  //annotation of the file that need to be annotated
 
-    final String filePathAnnSource = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_C_Review.ann";  //manually tagged ann file
+    final String filePathAnnSource = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+            "review_100_A_Review_last30.ann";  //manually tagged ann file
 
-    final String filePathDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
+    final String filePathDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "dictionaryAuto.txt";   //the file having related aspect and word
 
-    final String filePathNonDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
+    final String filePathNonDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "nonDictionaryAuto.txt";    //the file having non-related aspect and word
 
-    final String filePathExternalFile = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
+    final String filePathExternalFile = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "nonDictionaryAuto.txt";    //the files like foodlist
 
     Hashtable<String, String> dictionaryTerms = new Hashtable<>(); //<key=word,value=aspect>
     ArrayList<String> nonDictionaryTerms = new ArrayList<>();
     int characterCount = 0;
+    int characterCountTemp=0;
     StanfordLemmatizer stanfordLemmatizer = new StanfordLemmatizer();
     int tagCount = 0;
     int test = 0;
@@ -57,6 +58,7 @@ public class Annotation {
             loadOldTags();
             tagCount = noOfTagsAlreadyMax;
             readReviews();
+//            readReviews2();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -226,7 +228,25 @@ public class Annotation {
 
         while ((line = br.readLine()) != null) {
 //            System.out.println(line);
+            characterCountTemp=characterCount;
             analyzeReview(line);
+            characterCount=characterCountTemp;
+            analyzeReviewStemming(line);
+        }
+        br.close();
+        fr.close();
+    }
+    public void readReviews2() throws IOException {
+        File fileAnnotation = new File(filePathReview);
+        FileReader fr = new FileReader(fileAnnotation);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+//        characterCount=0;
+        while ((line = br.readLine()) != null) {
+//            System.out.println(line);
+//            characterCountTemp=characterCount;
+//            analyzeReview(line);
+//            characterCount=characterCountTemp;
             analyzeReviewStemming(line);
         }
         br.close();
@@ -431,7 +451,7 @@ public class Annotation {
     }
 
     public void analyzeReview(String review) throws IOException {
-        int indexTotal = 0;
+        
 
         Set set = dictionaryTerms.entrySet();
         Iterator it = set.iterator();
@@ -447,12 +467,12 @@ public class Annotation {
 
                 int currentIndex = matcher.start();
 
-                if (!alreadyAnnotated((currentIndex + indexTotal) + "-" + (currentIndex + indexTotal + item.length()), aspect, review.substring(currentIndex, matcher.end()))) {
-                    String newAnnotation = "T" + ++tagCount + "\t" + aspect + " " + (currentIndex + indexTotal) + " " + (currentIndex + indexTotal + item.length()) + "\t" + review.substring(currentIndex, matcher.end());
+                if (!alreadyAnnotated((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect, review.substring(currentIndex, matcher.end()))) {
+                    String newAnnotation = "T" + ++tagCount + "\t" + aspect + " " + (currentIndex + characterCount) + " " + (currentIndex + characterCount + item.length()) + "\t" + review.substring(currentIndex, matcher.end());
 
                     String word = review.substring(currentIndex, matcher.end());
                     String[] words = word.split(" ");
-                    int start = (currentIndex + indexTotal);
+                    int start = (currentIndex + characterCount);
 
                     if (words.length != 0) {
                         for (int i = 0; i < words.length; i++) {
@@ -462,16 +482,18 @@ public class Annotation {
                         }
                     }
 
-                    taggedItems.put((currentIndex + indexTotal) + "-" + (currentIndex + indexTotal + item.length()), aspect);
+                    taggedItems.put((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect);
 
 
                     System.out.println(newAnnotation);
                     writePrintStream(newAnnotation, filePathAnnDestination);
                 }
             }
-            indexTotal += review.length() + 1;
+
             test++;
         }
+        characterCount += review.length();
+        characterCount++;
     }
 
     // this method used to check whether a word already tagged or not
