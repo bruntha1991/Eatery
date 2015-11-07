@@ -33,7 +33,6 @@ public class AHP {
             getAspectCount(filePathToAnnFile);
             Utility.printHashTable(aspectHashtable);
 
-
             System.out.println("############# FIRST LEVEL ###############");
             separateFirstLevelAspects();
             System.out.println("############# RESTAURANT ###############");
@@ -65,10 +64,6 @@ public class AHP {
             System.out.println("############# WEIGHTS ###############");
             Utility.printHashTableSD(calculateWeightOfAspect(inputHashtableTL, normalisedMatrixHashtable));
 
-
-// separateThirdLevelAspects();
-//            Utility.printMatrix(inputHashtableTL, buildMatrixSecondLevel(inputHashtableTL));
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,18 +93,6 @@ public class AHP {
 
             }
         }
-//
-//        double weights[] = new double[doubles.length];
-//
-//        for (int i = 0; i < doubles.length; i++) {
-//            for (int j = 0; j < doubles.length; j++) {
-//                weights[i] += doubles[i][j];
-//            }
-//        }
-//
-//        for (int i = 0; i < stringArrayList.size(); i++) {
-//            hashtable.put(stringArrayList.get(i).getKey(), weights[i]);
-//        }
         return hashtable;
     }
 
@@ -135,7 +118,7 @@ public class AHP {
 
     }
 
-    public void buildMatrixTop() {
+    private void buildMatrixTop() {
         if (aspectHashtable.containsKey("Restaurant")) {
             System.out.println("Restaurant : " + aspectHashtable.get("Restaurant"));
         }
@@ -155,7 +138,7 @@ public class AHP {
         }
     }
 
-    public double[][] buildMatrix(ArrayList<Pair> arrayList) {
+    private double[][] buildMatrix(ArrayList<Pair> arrayList) {
         double[][] matrix = new double[arrayList.size()][arrayList.size()];
 
         for (int i = 0; i < arrayList.size(); i++) {
@@ -228,16 +211,7 @@ public class AHP {
         return hashtable;
     }
 
-//    private Hashtable<String, Double> calculateWeightOfAspect(Hashtable<String, double[][]> hashtable) {
-//        Set set = hashtable.entrySet();
-//        Iterator it = set.iterator();
-//        while (it.hasNext()) {
-//            Map.Entry entry = (Map.Entry) it.next();
-//        }
-//    }
-
-
-    public void separateSecondLevelAspects() {
+    private void separateSecondLevelAspects() {
         Set set = aspectHashtable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
@@ -253,7 +227,7 @@ public class AHP {
         }
     }
 
-    public void separateThirdLevelAspects() {
+    private void separateThirdLevelAspects() {
         Set set = aspectHashtable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
@@ -268,7 +242,7 @@ public class AHP {
         }
     }
 
-    public Hashtable<String, double[][]> buildMatrixSecondLevel(Hashtable<Character, ArrayList<Pair>> inputHashtableFL) {
+    private Hashtable<String, double[][]> buildMatrixSecondLevel(Hashtable<Character, ArrayList<Pair>> inputHashtableFL) {
         Hashtable<String, double[][]> outputHashtableFL = new Hashtable<>();
 
         Set set = inputHashtableFL.entrySet();
@@ -280,7 +254,7 @@ public class AHP {
         return outputHashtableFL;
     }
 
-    public Hashtable<String, double[][]> buildMatrixThirdLevel(Hashtable<Character, ArrayList<Pair>> inputHashtableFL) {
+    private Hashtable<String, double[][]> buildMatrixThirdLevel(Hashtable<Character, ArrayList<Pair>> inputHashtableFL) {
         Hashtable<String, double[][]> outputHashtableFL = new Hashtable<>();
 
         Set set = inputHashtableFL.entrySet();

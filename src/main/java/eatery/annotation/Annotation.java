@@ -18,13 +18,13 @@ public class Annotation {
             "dictionary.txt";
 
     final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "u_4.txt";  //the file path that need to be annotated
+            "u_6.txt";  //the file path that need to be annotated
 
     final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "u_4.ann";  //annotation of the file that need to be annotated
+            "u_6.ann";  //annotation of the file that need to be annotated
 
     final String filePathAnnSource = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review_100_A_Review_last30.ann";  //manually tagged ann file
+            "u_4.ann";  //manually tagged ann file
 
     final String filePathDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "dictionaryAuto.txt";   //the file having related aspect and word
@@ -293,15 +293,20 @@ public class Annotation {
             List<String> words = stanfordLemmatizer.lemmatize(reviewWords[i]);
 
             for (int j = 0; j < words.size(); j++) {
-                if (dictionaryTerms.containsKey(words.get(j))) {
+                if (dictionaryTerms.containsKey(words.get(j)) && !(reviewWords[i].contains(" ") ||reviewWords[i].contains("+")||reviewWords[i].contains("\"") ||reviewWords[i].contains("'")||reviewWords[i].contains(".") ||reviewWords[i].contains(":") || reviewWords[i].contains("(") || reviewWords[i].contains(")") ||reviewWords[i].contains("-") || reviewWords[i].contains(";"))) {
                     localCount = review.indexOf(reviewWords[i], localCount + 1);
                     if (!taggedItems.containsKey((characterCount + localCount) + "-" + (characterCount + localCount + reviewWords[i].length()))) {
                         String newAnnotation = "T" + ++tagCount + "\t" + dictionaryTerms.get(words.get(j)) + " " + (localCount + characterCount) + " " + (localCount + characterCount + reviewWords[i].length()) + "\t" + reviewWords[i];
 
-                        taggedItems.put((localCount + characterCount) + "-" + (localCount + characterCount + reviewWords[i].length()), dictionaryTerms.get(words.get(j)));
+                        try {
+                            taggedItems.put((localCount + characterCount) + "-" + (localCount + characterCount + reviewWords[i].length()), dictionaryTerms.get(words.get(j)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                        }
 
 
-                        System.out.println(newAnnotation);
+                        System.out.println("ARS\t"+newAnnotation);
                         writePrintStream(newAnnotation, filePathAnnDestination);
 //                        System.out.println(reviewWords[i] + " " + dictionaryTerms.get(words.get(j)) + " " + (localCount + characterCount) + " " + (localCount + characterCount + reviewWords[i].length()));
                     }
@@ -413,6 +418,7 @@ public class Annotation {
         String line;
         int indexTotal = 0;
 
+        if (!(item.contains(" ") ||item.contains("+") ||item.contains("\"") ||item.contains("'")||item.contains(".") ||item.contains(":") || item.contains("(") || item.contains(")") ||item.contains("-")|| item.contains(";")))
         while ((line = br.readLine()) != null) {
             Pattern pattern = Pattern.compile("\\b(" + item + ")\\b");
             Matcher matcher = pattern.matcher(line.toLowerCase());
@@ -434,17 +440,13 @@ public class Annotation {
                             start = end + 1;
                         }
                     }
-
                     taggedItems.put((currentIndex + indexTotal) + "-" + (currentIndex + indexTotal + item.length()), aspect);
-
-
-                    System.out.println(newAnnotation);
+                    System.out.println("ANN\t" + newAnnotation);
                     writePrintStream(newAnnotation, filePathAnnDestination);
                 }
             }
             indexTotal += line.length() + 1;
             test++;
-
         }
         br.close();
         fr.close();
@@ -461,34 +463,37 @@ public class Annotation {
             String item = entry.getKey().toString();
 
 
-            Pattern pattern = Pattern.compile("\\b(" + item + ")\\b");
-            Matcher matcher = pattern.matcher(review.toLowerCase());
-            while (matcher.find()) {
+            if (!(item.contains(" ") ||item.contains("+")||item.contains("\"") ||item.contains("'")||item.contains(".") ||item.contains(":") || item.contains("(") || item.contains(")") ||item.contains("-")|| item.contains(";"))) {
+                Pattern pattern = Pattern.compile("\\b(" + item + ")\\b");
+                Matcher matcher = pattern.matcher(review.toLowerCase());
+                while (matcher.find()) {
 
-                int currentIndex = matcher.start();
+                    int currentIndex = matcher.start();
 
-                if (!alreadyAnnotated((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect, review.substring(currentIndex, matcher.end()))) {
-                    String newAnnotation = "T" + ++tagCount + "\t" + aspect + " " + (currentIndex + characterCount) + " " + (currentIndex + characterCount + item.length()) + "\t" + review.substring(currentIndex, matcher.end());
+                    if (!alreadyAnnotated((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect, review.substring(currentIndex, matcher.end()))) {
+                        String newAnnotation = "T" + ++tagCount + "\t" + aspect + " " + (currentIndex + characterCount) + " " + (currentIndex + characterCount + item.length()) + "\t" + review.substring(currentIndex, matcher.end());
 
-                    String word = review.substring(currentIndex, matcher.end());
-                    String[] words = word.split(" ");
-                    int start = (currentIndex + characterCount);
+                        String word = review.substring(currentIndex, matcher.end());
+                        String[] words = word.split(" ");
+                        int start = (currentIndex + characterCount);
 
-                    if (words.length != 0) {
-                        for (int i = 0; i < words.length; i++) {
-                            int end = start + words[i].length();
-                            taggedItems.put(start + "-" + end, aspect);
-                            start = end + 1;
+                        if (words.length != 0) {
+                            for (int i = 0; i < words.length; i++) {
+                                int end = start + words[i].length();
+                                taggedItems.put(start + "-" + end, aspect);
+                                start = end + 1;
+                            }
                         }
+
+                        taggedItems.put((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect);
+
+
+                        System.out.println("AR\t"+newAnnotation);
+                        writePrintStream(newAnnotation, filePathAnnDestination);
                     }
-
-                    taggedItems.put((currentIndex + characterCount) + "-" + (currentIndex + characterCount + item.length()), aspect);
-
-
-                    System.out.println(newAnnotation);
-                    writePrintStream(newAnnotation, filePathAnnDestination);
                 }
             }
+
 
             test++;
         }
@@ -528,19 +533,20 @@ public class Annotation {
             String word = (String) e.nextElement();
             String tag = dictionaryTerms.get(word);
 
-            String tokenizedWords[] = tokenize(word);
+            if (!(word.contains(" ")||word.contains("+") ||word.contains("\"") ||word.contains("'")||word.contains(".") ||word.contains(":") || word.contains("(") || word.contains(")") ||word.contains("-")|| word.contains(";"))) {
+                String tokenizedWords[] = tokenize(word);
 
-            if (tokenizedWords.length == 1) {
-                List<String> stemmings = stanfordLemmatizer.lemmatize(word);
+                if (tokenizedWords.length == 1) {
+                    List<String> stemmings = stanfordLemmatizer.lemmatize(word);
 
-                for (int i = 0; i < stemmings.size(); i++) {
-                    if (!dictionaryTerms.containsKey(stemmings.get(i))) {
-                        dictionaryTerms.put(stemmings.get(i), tag);
-                        System.out.println("Stemming: " + word + "\t" + stemmings.get(i));
+                    for (int i = 0; i < stemmings.size(); i++) {
+                        if (!dictionaryTerms.containsKey(stemmings.get(i))) {
+                            dictionaryTerms.put(stemmings.get(i), tag);
+                            System.out.println("Stemming: " + word + "\t" + stemmings.get(i));
+                        }
                     }
                 }
             }
-
         }
     }
 

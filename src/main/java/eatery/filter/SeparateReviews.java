@@ -11,7 +11,7 @@ import java.util.*;
 public class SeparateReviews {
     public static void main(String[] args) {
         SeparateReviews separateReviews = new SeparateReviews();
-        separateReviews.separateTop100BussiessReview();
+        separateReviews.getRandomReviews(100);
 
     }
 
@@ -19,7 +19,7 @@ public class SeparateReviews {
     final static String filePathRead = "/home/bruntha/Documents/FYP/Data/Samples/" +
             "review_100_C.json";
     final static String filePathWrite = "/home/bruntha/Documents/FYP/Data/Samples/" +
-            "u_4.txt";
+            "u_8.txt";
     final static String filePathEnglishReviews = "/home/bruntha/Documents/FYP/Data/English Review/" +
             "englishReviews.json";
     final static String filePathFrequency = "/home/bruntha/Documents/FYP/Data/English Review/" +
