@@ -30,7 +30,7 @@ import java.util.*;
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            System.out.printf("%-20s %-20s \n",entry.getKey(),entry.getValue());
+            System.out.printf("%-20s %-20s \n",entry.getKey(),Math.round(Double.parseDouble(entry.getValue().toString()) * factor) / factor);
 //            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
     }
@@ -75,6 +75,30 @@ import java.util.*;
             Map.Entry entry = (Map.Entry) it.next();
             printMatrix((ArrayList<Pair>)entry.getValue(),outputHashtableFL.get(entry.getKey().toString()));
         }
+
+    }
+
+    public static void printHashTableSD(Hashtable<Character, ArrayList<Pair>> inputHashTable, Hashtable<String, Double> weightsL2) {
+        Set set1=inputHashTable.entrySet();
+        Iterator it1=set1.iterator();
+
+        while (it1.hasNext()) {
+            Map.Entry entry1= (Map.Entry) it1.next();
+
+            Set set = weightsL2.entrySet();
+            Iterator it = set.iterator();
+            System.out.println();
+            while (it.hasNext()) {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                if (entry1.getKey().toString().matches(entry.getKey().toString().substring(0, 1))) {
+                    System.out.printf("%-20s %-20s \n",entry.getKey(),Math.round(Double.parseDouble(entry.getValue().toString()) * factor) / factor);
+                }
+//            System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+
+        }
+
 
     }
 }

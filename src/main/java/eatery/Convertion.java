@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 public class Convertion {
 
     final static String filePathToBeConverted = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review.txt";  //the file path that need to be annotated
+            "review_100_D_Review.txt";  //the file path that need to be annotated
     final static String filePathAnnotation = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review.ann";  //annotation of the file that need to be annotated
+            "review_100_D_Review.ann";  //annotation of the file that need to be annotated
     final static String filePathConverted = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "openNBN.txt";
+            "review_100_D_Review_NLP.txt";
 
     final static String testSTRING = "\"I loved  <START:Restaurant> this   place   <END>  and I can't believe it was just by accident that I discovered it. I was walking by on St Catherine's last night and saw a guy making crepes in a window. I thought to myself, this is a  <START:Restaurant> place <END>  to go for  <START:  food  > breakfast <END>  tomorrow and that's what I did today. For less than $11, I got a giant  <START:F_Drinks> coffee <END>  and a  <START:P_F_FI_Size> huge <END>   <START:F_FoodItem> spinach <END>  and  <START:F_FoodItem> egg   crepe   <END> . I arrived at 8am and  <START:Restaurant> there <END>  were hardly any customers. I was surprised and then concerned but not for long.  <START:Service> service <END>  was  <START:P_Service> fast <END>  and  <START:P_Service> polite <END> , and the  <START:F_FoodItem> crepe <END>  was  <START:P_F_FI_Taste> perfect <END> ! I plan to come back tomorrow and try a  <START:F_FoodItem> crepe <END>  from their sweet  <START:S_Menu> menu <END> - <START:F_FoodItem> strawberries <END>  and  <START:F_FoodItem> dark chocolate <END> . Mmm!\"\n";
 
@@ -32,14 +32,6 @@ public class Convertion {
 
     public static void main(String[] args) {
 
-//        try {
-//            loadAllTagsByNumber();
-//            convertBratToOpennlpByNumber();
-////            System.out.println("Loop Time: " + loopTimes);
-////            convertBratToOpennlp();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         try {
             loadAllTags();
             System.out.println("Loop Time: " + loopTimes);
@@ -47,9 +39,6 @@ public class Convertion {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println(removeInnerTags(testSTRING));
-//        System.out.println(removeSpaceWITags(testSTRING));
-
     }
 
     private static synchronized void loadAllTags() throws IOException {
@@ -67,10 +56,13 @@ public class Convertion {
                 loopTimes = words.length - 1;
 
             if (!listOfItems.contains(word)) {
-                Tag tag = new Tag(annotations[1], word);
-                tags.add(tag);
-                System.out.println(tag);
-                listOfItems.add(word);
+                if (!annotations[1].startsWith("P_")) {
+                    Tag tag = new Tag(annotations[1], word);
+                    tags.add(tag);
+                    System.out.println(tag);
+                    listOfItems.add(word);
+                }
+
             }
         }
 
@@ -96,10 +88,10 @@ public class Convertion {
 
         while ((line = br.readLine()) != null) {
             String[] annotations = line.split("[ \t]");
-            String index = annotations[2]+"-"+annotations[3];
+            String index = annotations[2] + "-" + annotations[3];
 
             if (!listOfItemsNumbers.contains(index)) {
-                Tag tag = new Tag(Integer.parseInt(annotations[2]),Integer.parseInt(annotations[3]),annotations[1]);
+                Tag tag = new Tag(Integer.parseInt(annotations[2]), Integer.parseInt(annotations[3]), annotations[1]);
                 tagsNumbers.add(tag);
                 System.out.println(tag);
                 listOfItemsNumbers.add(index);
@@ -135,12 +127,6 @@ public class Convertion {
 //                    currentIndex = line.indexOf(tags.get(i).getWord(), currentIndex + 1);
                 }
 
-//                while (currentIndex != -1) {
-//                    open = open + line.substring(oldIndex, currentIndex) + "<START:" + tags.get(i).getKey() + "> " + tags.get(i).getWord() + " <END>";
-////                    System.out.println(open);
-//                    oldIndex = currentIndex + tags.get(i).getWord().length();
-//                    currentIndex = line.indexOf(tags.get(i).getWord(), currentIndex + 1);
-//                }
                 if (!open.equals(""))
                     line = open + line.substring(oldIndex, line.length());
             }
@@ -161,22 +147,22 @@ public class Convertion {
         FileReader fr = new FileReader(fileAnnotation);
         BufferedReader br = new BufferedReader(fr);
         String lineRead;
-        int totalIndex=0;
+        int totalIndex = 0;
 
         while ((lineRead = br.readLine()) != null) {
-            int lineLenght=lineRead.length();
+            int lineLenght = lineRead.length();
             for (int i = 0; i < tagsNumbers.size(); i++) {
-                if (tagsNumbers.get(i).getStartIndex()>= totalIndex && tagsNumbers.get(i).getEndIndex()<=totalIndex+lineLenght) {
-                    String fistPart=lineRead.substring(0,tagsNumbers.get(i).getStartIndex()-totalIndex);
-                    String middlePart=lineRead.substring(tagsNumbers.get(i).getStartIndex()-totalIndex,tagsNumbers.get(i).getEndIndex()-totalIndex);
-                    String lastPart=lineRead.substring(tagsNumbers.get(i).getEndIndex()-totalIndex);
+                if (tagsNumbers.get(i).getStartIndex() >= totalIndex && tagsNumbers.get(i).getEndIndex() <= totalIndex + lineLenght) {
+                    String fistPart = lineRead.substring(0, tagsNumbers.get(i).getStartIndex() - totalIndex);
+                    String middlePart = lineRead.substring(tagsNumbers.get(i).getStartIndex() - totalIndex, tagsNumbers.get(i).getEndIndex() - totalIndex);
+                    String lastPart = lineRead.substring(tagsNumbers.get(i).getEndIndex() - totalIndex);
 
-                    String newLine=fistPart+" <START:"+tagsNumbers.get(i).getKey()+"> "+middlePart+" <END> "+lastPart;
+                    String newLine = fistPart + " <START:" + tagsNumbers.get(i).getKey() + "> " + middlePart + " <END> " + lastPart;
                     System.out.println(newLine);
-                    writePrintStream(newLine,true);
+                    writePrintStream(newLine, true);
                 }
             }
-            totalIndex+=lineLenght;
+            totalIndex += lineLenght;
         }
         br.close();
         fr.close();
@@ -219,32 +205,30 @@ public class Convertion {
 
     public static String removeSpaceWITags(String line) {
         int startTagStart = line.indexOf("<START:");
-        int startTagEnd = line.indexOf(">",startTagStart);
+        int startTagEnd = line.indexOf(">", startTagStart);
 
         String firstPart;
-        String endPart ;
+        String endPart;
         String startTagPart;
 
         while (startTagStart != -1) {
-             firstPart = line.substring(0, startTagStart);
-             endPart = line.substring(startTagEnd + 1, line.length());
-             startTagPart=line.substring(startTagStart,startTagEnd+1);
+            firstPart = line.substring(0, startTagStart);
+            endPart = line.substring(startTagEnd + 1, line.length());
+            startTagPart = line.substring(startTagStart, startTagEnd + 1);
             if (startTagPart.contains(" ")) {
-                startTagPart= startTagPart.replace(" ","");
-                int index=startTagPart.indexOf(":");
-                char changeChar=startTagPart.charAt(index+1);
+                startTagPart = startTagPart.replace(" ", "");
+                int index = startTagPart.indexOf(":");
+                char changeChar = startTagPart.charAt(index + 1);
                 StringBuilder tag = new StringBuilder(startTagPart);
-                tag.replace(startTagPart.indexOf(changeChar),startTagPart.indexOf(changeChar)+1,String.valueOf(Character.toUpperCase(changeChar)));
-                startTagPart=tag.toString();
+                tag.replace(startTagPart.indexOf(changeChar), startTagPart.indexOf(changeChar) + 1, String.valueOf(Character.toUpperCase(changeChar)));
+                startTagPart = tag.toString();
             }
 
 
+            line = firstPart + startTagPart + endPart;
 
-
-            line=firstPart+startTagPart+endPart;
-
-            startTagStart=line.indexOf("<START:",startTagEnd);
-            startTagEnd=line.indexOf(">",startTagStart);
+            startTagStart = line.indexOf("<START:", startTagEnd);
+            startTagEnd = line.indexOf(">", startTagStart);
         }
 
         System.out.println(line);

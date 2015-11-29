@@ -17,11 +17,11 @@ public class Annotation {
     final String filePathDictionary = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "dictionary.txt";
 
-    final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "u_6.txt";  //the file path that need to be annotated
+    final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
+            "review_100_C_Review_last30.txt";  //the file path that need to be annotated
 
-    final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "u_6.ann";  //annotation of the file that need to be annotated
+    final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
+            "review_100_C_Review_last30.ann";  //annotation of the file that need to be annotated
 
     final String filePathAnnSource = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
             "u_4.ann";  //manually tagged ann file
@@ -54,7 +54,7 @@ public class Annotation {
 
     public void automate() {
         try {
-            dictionary();
+            dictionary(true);
             loadOldTags();
             tagCount = noOfTagsAlreadyMax;
             readReviews();
@@ -77,13 +77,15 @@ public class Annotation {
     }
 
     //related works to words and aspect pairs
-    private void dictionary() {
+    private void dictionary(boolean updateDictionary) {
         try {
             loadDictionary(filePathDictionaryAuto);
             loadNonDictionaryTerms(filePathNonDictionaryAuto);
-            upgradeDictionary();
-            populateDictionary();
-            writeToDictionary();
+            if (updateDictionary) {
+                upgradeDictionary();
+                populateDictionary();
+                writeToDictionary();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,7 +195,9 @@ public class Annotation {
             Enumeration e = dictionaryTerms.keys();
             while (e.hasMoreElements()) {
                 String word = (String) e.nextElement();
-                writePrintStream(dictionaryTerms.get(word) + " " + word, filePathDictionaryAuto);
+                if (word.length() != 1) {
+                    writePrintStream(dictionaryTerms.get(word) + " " + word, filePathDictionaryAuto);
+                }
             }
         } else {
             System.out.println("Error in dictionary file");
@@ -365,7 +369,14 @@ public class Annotation {
     //this method used to load the already tagged tags in the file that need to be annotated
     private void loadOldTags() throws IOException {
         File fileAnnotation = new File(filePathAnnDestination);
+        if (!fileAnnotation.exists()) {
+            fileAnnotation.createNewFile();
+        }
         FileReader fr = new FileReader(fileAnnotation);
+
+
+
+
         BufferedReader br = new BufferedReader(fr);
         String line;
 
