@@ -47,5 +47,6 @@
     <orderEntry type="library" name="Maven: edu.washington.cs.knowitall:opennlp-tokenize-models:1.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.uima:WhitespaceTokenizer:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.2" level="project" />
+    <orderEntry type="library" name="Maven: gov.nist.math:jama:1.0.3" level="project" />
   </component>
 </module>

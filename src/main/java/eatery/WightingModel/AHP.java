@@ -12,8 +12,8 @@ import java.util.*;
 
 public class AHP {
     Hashtable<String, Integer> aspectHashtable = new Hashtable<>();
-    Hashtable<Character, ArrayList<Pair>> inputHashtableSL = new Hashtable<>();
-    Hashtable<Character, ArrayList<Pair>> inputHashtableTL = new Hashtable<>();
+    Hashtable<String, ArrayList<Pair>> inputHashtableSL = new Hashtable<>();
+    Hashtable<String, ArrayList<Pair>> inputHashtableTL = new Hashtable<>();
     String[] filePathToAnnFileArray = {"/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_1.ann",
             "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_2.ann",
             "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_3.ann",
@@ -46,7 +46,7 @@ public class AHP {
             System.out.println("############# NORMALIZED WEIGHTS ###############");
             Utility.printHashTableSD(normalizeWeights(weights));
 
-            System.out.println("############# SECOND LEVEL ###############");
+            /*System.out.println("############# SECOND LEVEL ###############");
             separateSecondLevelAspects();
             Hashtable<String, double[][]> matrixHashTable = buildMatrixSecondLevel(inputHashtableSL);
             Utility.printMatrix(inputHashtableSL, matrixHashTable);
@@ -67,10 +67,10 @@ public class AHP {
             normalisedMatrixHashtable = normalizeByColumn(matrixHashTable);
             Utility.printMatrix(inputHashtableTL, normalisedMatrixHashtable);
             System.out.println("############# WEIGHTS ###############");
-            weights=calculateWeightOfAspect(inputHashtableTL, normalisedMatrixHashtable);
-            Utility.printHashTableSD(inputHashtableTL,weights);
+            weights = calculateWeightOfAspect(inputHashtableTL, normalisedMatrixHashtable);
+            Utility.printHashTableSD(inputHashtableTL, weights);
             System.out.println("############# NORMALIZED WEIGHTS ###############");
-            Utility.printHashTableSD(inputHashtableTL, normalizeWeights(inputHashtableTL, weights));
+            Utility.printHashTableSDT(inputHashtableTL, normalizeWeightsTL(inputHashtableTL, weights));*/
 
 //            Utility.printHashTableSD(normalizeWeights(weights));
 
@@ -79,8 +79,8 @@ public class AHP {
         }
     }
 
-    private Hashtable<String, Double> normalizeWeights(Hashtable<Character, ArrayList<Pair>> inputHashtableSL, Hashtable<String, Double> weightsL2) {
-        Hashtable<String, Double> hashtableResult = new Hashtable<>();
+    private Hashtable<String, Double> normalizeWeights(Hashtable<String, ArrayList<Pair>> inputHashtableSL, Hashtable<String, Double> weightsL2) {
+        Hashtable<String, Double> hastTableResult = new Hashtable<>();
 
         Set set1 = inputHashtableSL.entrySet();
         Iterator it1 = set1.iterator();
@@ -91,28 +91,71 @@ public class AHP {
             Set set = weightsL2.entrySet();
             Iterator it = set.iterator();
             System.out.println();
-            Hashtable<String, Double> hashtable = new Hashtable<>();
-            Hashtable<String, Double> hashtableTemp = new Hashtable<>();
+            Hashtable<String, Double> hastTable = new Hashtable<>();
+            Hashtable<String, Double> hastTableTemp;
 
             while (it.hasNext()) {
                 Map.Entry entry = (Map.Entry) it.next();
                 if (entry1.getKey().toString().matches(entry.getKey().toString().substring(0, 1))) {
-                    hashtable.put(entry.getKey().toString(), (Double) entry.getValue());
+                    hastTable.put(entry.getKey().toString(), (Double) entry.getValue());
                 }
             }
 
-            hashtableTemp=normalizeWeights(hashtable);
-            Set set2 = hashtableTemp.entrySet();
+            hastTableTemp = normalizeWeights(hastTable);
+            Set set2 = hastTableTemp.entrySet();
             Iterator it2 = set2.iterator();
             while (it2.hasNext()) {
                 Map.Entry entry = (Map.Entry) it2.next();
-                hashtableResult.put(entry.getKey().toString(), (Double) entry.getValue());
+                hastTableResult.put(entry.getKey().toString(), (Double) entry.getValue());
             }
         }
-        return hashtableResult;
+        return hastTableResult;
     }
 
-    private Hashtable<String, Double> calculateWeightOfAspect(Hashtable<Character, ArrayList<Pair>> inputHashTable,
+    private Hashtable<String, Double> normalizeWeightsTL(Hashtable<String, ArrayList<Pair>> inputHashTable, Hashtable<String, Double> weightsL2) {
+        Hashtable<String, Double> hastTableResult = new Hashtable<>();
+
+        Set set1 = inputHashTable.entrySet();
+        Iterator it1 = set1.iterator();
+
+        while (it1.hasNext()) {
+            Map.Entry entry1 = (Map.Entry) it1.next();
+            ArrayList<Pair> pairArrayList = (ArrayList<Pair>) entry1.getValue();
+
+            for (int i = 0; i < pairArrayList.size(); i++) {
+                int index = pairArrayList.get(i).getKey().indexOf("_", 2);
+                String prefix = pairArrayList.get(i).getKey().substring(0, index);
+
+                Set set = weightsL2.entrySet();
+                Iterator it = set.iterator();
+                System.out.println();
+                Hashtable<String, Double> hastTable = new Hashtable<>();
+                Hashtable<String, Double> hastTableTemp;
+
+                while (it.hasNext()) {
+                    Map.Entry entry = (Map.Entry) it.next();
+                    index = entry.getKey().toString().indexOf("_", 2);
+
+                    if (prefix.matches(entry.getKey().toString().substring(0, index))) {
+                        hastTable.put(entry.getKey().toString(), (Double) entry.getValue());
+                    }
+                }
+
+                hastTableTemp = normalizeWeights(hastTable);
+                Set set2 = hastTableTemp.entrySet();
+                Iterator it2 = set2.iterator();
+                while (it2.hasNext()) {
+                    Map.Entry entry = (Map.Entry) it2.next();
+                    hastTableResult.put(entry.getKey().toString(), (Double) entry.getValue());
+                }
+            }
+
+
+        }
+        return hastTableResult;
+    }
+
+    private Hashtable<String, Double> calculateWeightOfAspect(Hashtable<String, ArrayList<Pair>> inputHashTable,
                                                               Hashtable<String, double[][]> normalisedMatrixHashtable) {
         Hashtable<String, Double> hashTable = new Hashtable<>();
 
@@ -173,26 +216,31 @@ public class AHP {
 
     }
 
-    public void separateFirstLevelAspects() {
+    private void separateFirstLevelAspects() {
         Set set = aspectHashtable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             if (!(entry.getKey().toString().matches("Restaurant") || entry.getKey().toString().matches("Restaurants")) && StringUtils.countMatches(entry.getKey().toString(), "_") == 0) {
-                System.out.println(entry.getKey() + " : " + entry.getValue());
                 pairFirstLevelArrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
-//                inputHashtableSL.put(entry.getKey().toString().substring(0,1), new ArrayList<Pair>());
-                inputHashtableSL.put(entry.getKey().toString().charAt(0), new ArrayList<Pair>());
+                inputHashtableSL.put(entry.getKey().toString().substring(0, 1), new ArrayList<Pair>());
             }
         }
 
+        it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            entry.getKey().toString().charAt(0);
+            for (int i = 0; i < pairFirstLevelArrayList.size(); i++) {
+                if (entry.getKey().toString().substring(0, 1).matches(pairFirstLevelArrayList.get(i).getKey().substring(0, 1))) {
+                    Pair pair = pairFirstLevelArrayList.remove(i);
+                    pair.setValue(pair.getValue() + Integer.parseInt(entry.getValue().toString()));
+                    pairFirstLevelArrayList.add(pair);
+                }
+            }
         }
     }
 
-//    private void addChild(Hashtable<Character, ArrayList<Pair>> inputHashtable) {
+//    private void addChild(Hashtable<String, ArrayList<Pair>> inputHashtable) {
 //
 //        pairFirstLevelArrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
 //
@@ -226,11 +274,11 @@ public class AHP {
         return doubles;
     }
 
-    private Hashtable<String, double[][]> normalizeByColumn(Hashtable<String, double[][]> hashtable) {
+    private Hashtable<String, double[][]> normalizeByColumn(Hashtable<String, double[][]> hastTable) {
         Hashtable<String, double[][]> result = new Hashtable<>();
 
 
-        Set set = hashtable.entrySet();
+        Set set = hastTable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
@@ -256,7 +304,7 @@ public class AHP {
     }
 
     private Hashtable<String, Double> calculateWeightOfAspect(ArrayList<Pair> stringArrayList, double[][] doubles) {
-        Hashtable<String, Double> hashtable = new Hashtable<>();
+        Hashtable<String, Double> hastTable = new Hashtable<>();
         double weights[] = new double[doubles.length];
 
         for (int i = 0; i < doubles.length; i++) {
@@ -266,15 +314,15 @@ public class AHP {
         }
 
         for (int i = 0; i < stringArrayList.size(); i++) {
-            hashtable.put(stringArrayList.get(i).getKey(), weights[i]);
+            hastTable.put(stringArrayList.get(i).getKey(), weights[i]);
         }
-        return hashtable;
+        return hastTable;
     }
 
-    private Hashtable<String, Double> normalizeWeights(Hashtable<String, Double> hashtable) {
-        Hashtable<String, Double> hashtableResult = new Hashtable<>();
+    private Hashtable<String, Double> normalizeWeights(Hashtable<String, Double> hastTable) {
+        Hashtable<String, Double> hastTableResult = new Hashtable<>();
         double total = 0;
-        Set set = hashtable.entrySet();
+        Set set = hastTable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
@@ -284,10 +332,10 @@ public class AHP {
         Iterator it2 = set.iterator();
         while (it2.hasNext()) {
             Map.Entry entry2 = (Map.Entry) it2.next();
-            hashtableResult.put(entry2.getKey().toString(), ((double) entry2.getValue()) / total);
+            hastTableResult.put(entry2.getKey().toString(), ((double) entry2.getValue()) / total);
         }
 
-        return hashtableResult;
+        return hastTableResult;
     }
 
     private void separateSecondLevelAspects() {
@@ -296,16 +344,46 @@ public class AHP {
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             if (StringUtils.countMatches(entry.getKey().toString(), "_") == 1) {
-                if (inputHashtableSL.containsKey(entry.getKey().toString().charAt(0))) {
-                    ArrayList<Pair> pairArrayList = inputHashtableSL.get(entry.getKey().toString().charAt(0));
+                if (inputHashtableSL.containsKey(entry.getKey().toString().substring(0, 1))) {
+                    ArrayList<Pair> pairArrayList = inputHashtableSL.get(entry.getKey().toString().substring(0, 1));
                     pairArrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
-//                    inputHashtableSL.put(entry.getKey().toString().substring(0,1), pairArrayList);
-                    inputHashtableSL.put(entry.getKey().toString().charAt(0), pairArrayList);
-                    int index=entry.getKey().toString().indexOf("-",2);
-//                    inputHashtableTL.put(entry.getKey().toString().substring(0, 1), new ArrayList<Pair>());
-                    inputHashtableTL.put(entry.getKey().toString().charAt(0), new ArrayList<Pair>());
+                    inputHashtableSL.put(entry.getKey().toString().substring(0, 1), pairArrayList);
+                    inputHashtableTL.put(entry.getKey().toString().substring(0, 1), new ArrayList<Pair>());
                 }
             }
+        }
+
+        it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+
+            if (StringUtils.countMatches(entry.getKey().toString(), "_") == 2) {
+                Set set2 = inputHashtableSL.entrySet();
+                Iterator it2 = set2.iterator();
+                while (it2.hasNext()) {
+                    Map.Entry entry2 = (Map.Entry) it2.next();
+                    ArrayList<Pair> pairArrayList = (ArrayList<Pair>) entry2.getValue();
+
+                    for (int i = 0; i < pairArrayList.size(); i++) {
+                        if (StringUtils.countMatches(pairArrayList.get(i).getKey(), "_") == 2) {
+
+                            int index1 = entry.getKey().toString().indexOf("_", 2);
+                            int index2 = pairArrayList.get(i).getKey().indexOf("_", 2);
+
+
+                            if (entry.getKey().toString().substring(0, index1).matches(pairArrayList.get(i).getKey().substring(0, index2))) {
+                                Pair pair = pairArrayList.remove(i);
+                                pair.setValue(pair.getValue() + Integer.parseInt(entry.getValue().toString()));
+                                pairArrayList.add(pair);
+                            }
+
+                        }
+
+                    }
+                    inputHashtableSL.put(entry2.getKey().toString(), pairArrayList);
+                }
+            }
+
         }
     }
 
@@ -315,24 +393,45 @@ public class AHP {
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             if (StringUtils.countMatches(entry.getKey().toString(), "_") == 2) {
-                if (inputHashtableTL.containsKey(entry.getKey().toString().charAt(0))) {
-                    ArrayList<Pair> pairArrayList = inputHashtableTL.get(entry.getKey().toString().charAt(0));
+                if (inputHashtableTL.containsKey(entry.getKey().toString().substring(0, 1))) {
+                    ArrayList<Pair> pairArrayList = inputHashtableTL.get(entry.getKey().toString().substring(0, 1));
                     pairArrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
-                    inputHashtableTL.put(entry.getKey().toString().charAt(0), pairArrayList);
-//                    inputHashtableTL.put(entry.getKey().toString().substring(0, 1), pairArrayList);
+//                    inputHashtableTL.put(entry.getKey().toString().charAt(0), pairArrayList);
+                    inputHashtableTL.put(entry.getKey().toString().substring(0, 1), pairArrayList);
                 }
             }
         }
+
+        /*it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+
+            Set set2 = inputHashtableTL.entrySet();
+            Iterator it2 = set2.iterator();
+            while (it2.hasNext()) {
+                Map.Entry entry2 = (Map.Entry) it2.next();
+                ArrayList<Pair> pairArrayList = (ArrayList<Pair>) entry2.getValue();
+
+                for (int i = 0; i < pairArrayList.size(); i++) {
+                    if (entry.getKey().toString().substring(0, 1).matches(pairArrayList.get(i).getKey().substring(0, 1))) {
+                        Pair pair = pairArrayList.remove(i);
+                        pair.setValue(pair.getValue() + Integer.parseInt(entry.getValue().toString()));
+                        pairArrayList.add(pair);
+                    }
+                }
+                inputHashtableTL.put(entry2.getKey().toString(), pairArrayList);
+            }
+        }*/
     }
 
-    private Hashtable<String, double[][]> buildMatrixSecondLevel(Hashtable<Character, ArrayList<Pair>> inputHashtable) {
+    private Hashtable<String, double[][]> buildMatrixSecondLevel(Hashtable<String, ArrayList<Pair>> inputHashtable) {
         Hashtable<String, double[][]> outputHashtableFL = new Hashtable<>();
 
         Set set = inputHashtable.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            outputHashtableFL.put(entry.getKey().toString(), buildMatrix((ArrayList<Pair>) entry.getValue()));
+            outputHashtableFL.put((String) entry.getKey(), buildMatrix((ArrayList<Pair>) entry.getValue()));
         }
         return outputHashtableFL;
     }
