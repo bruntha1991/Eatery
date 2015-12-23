@@ -3,6 +3,7 @@ package eatery.WightingModel;
 import Jama.Matrix;
 import domain.Pair;
 import edu.umbc.cs.maple.utils.JamaUtils;
+import excel.Excel;
 import org.apache.commons.lang.StringUtils;
 import utilities.Utility;
 
@@ -20,9 +21,15 @@ public class AHPM {
             "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_2.ann",
             "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_3.ann",
             "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_4.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_5.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_9.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_11.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_12.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_13.ann",
+            "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/u_14.ann",
     };
     Hashtable<String, Integer> aspectHashtable = new Hashtable<>();
-    double[] ri = {0, 0, 0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.51};
+    double[] ri = {0, 0, 0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.51, 1.51, 1.51, 1.51};
 
 
     public static void main(String args[]) {
@@ -37,13 +44,24 @@ public class AHPM {
 //            Utility.printHashTable(aspectHashtable);
 
 
-            calculateWeights("Restaurant","",0,aspectHashtable);
-//            calculateWeights("Service", "S", 1, aspectHashtable);
-//            calculateWeights("Worthiness", "W", 1, aspectHashtable);
-//            calculateWeights("Ambience", "A", 1, aspectHashtable);
-//            calculateWeights("Food", "F", 1, aspectHashtable);
-//            calculateWeights("Offers", "O", 1, aspectHashtable);
-//            calculateWeights("S_Staff","S_Stf",2,aspectHashtable);
+            calculateWeights("Restaurant", "", 0, aspectHashtable);
+            calculateWeights("Service", "S", 1, aspectHashtable);
+            calculateWeights("Worthiness", "W", 1, aspectHashtable);
+            calculateWeights("Ambience", "A", 1, aspectHashtable);
+            calculateWeights("Food", "F", 1, aspectHashtable);
+            calculateWeights("Offers", "O", 1, aspectHashtable);
+            calculateWeights("S_Staff", "S_Stf", 2, aspectHashtable);
+            calculateWeights("S_Delivery", "S_Del", 2, aspectHashtable);
+            calculateWeights("A_Entertainment", "A_Ent", 2, aspectHashtable);
+            calculateWeights("A_Furniture", "A_Fur", 2, aspectHashtable);
+            calculateWeights("A_Places", "A_Plc", 2, aspectHashtable);
+            calculateWeights("A_LocatedArea", "S_Stf", 2, aspectHashtable);
+            calculateWeights("F_FoodItem", "F_FI", 2, aspectHashtable);
+            calculateWeights("O_Payment", "O_Pay", 2, aspectHashtable);
+            calculateWeights("O_Reservation", "A_Env", 2, aspectHashtable);
+            calculateWeights("O_Experience", "O_Exp", 2, aspectHashtable);
+            calculateWeights("A_Environment", "A_Env", 2, aspectHashtable);
+            calculateWeights("A_Environment", "A_Env", 2, aspectHashtable);
 
 
         } catch (IOException e) {
@@ -57,8 +75,14 @@ public class AHPM {
         domain.Matrix matrix = buildMatrix(arrayList, heading);
         matrix.print();
 
-        double[][] vals = {{1, 3,1/3}, {1/3,1,3},{3,1/3,1}};
-        Matrix m = new Matrix(vals);
+//        double[][] vals = {{1, 3, 1 / 3}, {1 / 3, 1, 3}, {3, 1 / 3, 1}};
+////        double[][] val = {{1, 2, 3, 9, 9}, {1 / 2.0, 1, 2, 3, 7}, {1 / 3.0, 1 / 2.0, 1, 2, 4}, {1 / 9.0, 1 / 3.0, 1 / 2.0, 1, 2}, {1 / 9.0, 1 / 7.0, 1 / 4.0, 1 / 2.0, 1}};
+////        double[][] val = {{1,2,3,4,5}, {1 / 2.0, 1, 2, 2,2}, {1 / 3.0, 1 / 2.0, 1, 1,2}, {1/4.0,1/2.0,1,1,1}, {1/5.0,1/2.0,1/2.0,1,1}};
+//        double[][] val = {{1,1,2,3,5}, {1,1,1,2,4}, {1/2.0,1,1,2,3}, {1/3.0,1/2.0,1/2.0,1,2}, {1/5.0,1/4.0,1/3.0,1/2.0,1}};
+//        Matrix m = new Matrix(val);
+//
+//        m.print(5, 5);
+//        double eigenMax = EigenValues.getMaxEigenValue(matrix);
 
 
         double eigenMax = EigenValues.getMaxEigenValue(matrix.getMatrix());
@@ -70,6 +94,7 @@ public class AHPM {
         matrixJama = getRowSum(matrixJama);
         System.out.println("*********** Weights **************");
         Utility.print(arrayList, matrixJama);
+        Excel.writeWeights(arrayList,matrixJama,heading);
         System.out.println("************************************************************************************************************************************");
 
     }
@@ -83,7 +108,8 @@ public class AHPM {
             while (it.hasNext()) {
                 Map.Entry entry = (Map.Entry) it.next();
                 if (!(entry.getKey().toString().matches("Restaurants")) && StringUtils.countMatches(entry.getKey().toString(), "_") == 0) {
-                    arrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
+                    if (!(entry.getKey().toString().matches("Opinion")))
+                        arrayList.add(new Pair(entry.getKey().toString(), Integer.parseInt(entry.getValue().toString())));
                 }
             }
         } else {
@@ -109,7 +135,7 @@ public class AHPM {
                     }
                 }
             }
-        } else if(level!=2){
+        } else if (level != 2) {
             Set set = count.entrySet();
             Iterator it = set.iterator();
             while (it.hasNext()) {
@@ -140,7 +166,9 @@ public class AHPM {
             }
         }
 
-        Utility.print(arrayList);
+
+        
+//        Utility.print(arrayList);
         return arrayList;
     }
 

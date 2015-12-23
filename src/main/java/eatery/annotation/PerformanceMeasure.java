@@ -14,10 +14,10 @@ public class PerformanceMeasure {
     Hashtable<String,String> manuallyTagged=new Hashtable<>();
 
     final String filePathAnnAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_C_Review_last30.ann";  //manually tagged ann file
+            "u_14.ann";  //manually tagged ann file
 
     final String filePathAnnManual = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review_100_C_Review_last30.ann";  //manually tagged ann file
+            "u_14.ann";  //manually tagged ann file
 
     int taggedWords=0;
     int correctTaggs=0;

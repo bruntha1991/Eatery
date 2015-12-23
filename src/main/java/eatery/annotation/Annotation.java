@@ -14,22 +14,22 @@ import java.util.regex.Pattern;
  * Created by bruntha on 9/10/15.
  */
 public class Annotation {
-    final String filePathDictionary = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "dictionary.txt";
+//    final String filePathDictionary = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+//            "dictionary.txt";
 
     final String filePathReview = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_C_Review_last30.txt";  //the file path that need to be annotated
+            "u_14.txt";  //the file path that need to be annotated
 
     final String filePathAnnDestination = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
-            "review_100_C_Review_last30.ann";  //annotation of the file that need to be annotated
+            "u_14.ann";  //annotation of the file that need to be annotated
 
     final String filePathAnnSource = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "u_4.ann";  //manually tagged ann file
+            "A.ann";  //manually tagged ann file
 
-    final String filePathDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+    final String filePathDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
             "dictionaryAuto.txt";   //the file having related aspect and word
 
-    final String filePathNonDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
+    final String filePathNonDictionaryAuto = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/Test/" +
             "nonDictionaryAuto.txt";    //the file having non-related aspect and word
 
     final String filePathExternalFile = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
@@ -54,7 +54,7 @@ public class Annotation {
 
     public void automate() {
         try {
-            dictionary(true);
+            dictionary(false);
             loadOldTags();
             tagCount = noOfTagsAlreadyMax;
             readReviews();
@@ -206,22 +206,22 @@ public class Annotation {
 
     }
 
-    public void loadDictionaryManual() throws IOException {
-        File fileAnnotation = new File(filePathDictionary);
-        FileReader fr = new FileReader(fileAnnotation);
-        BufferedReader br = new BufferedReader(fr);
-        String line;
-
-        while ((line = br.readLine()) != null) {
-            String[] dic = line.split("[ \t]");
-            String word = line.substring(line.indexOf(" ") + 1);
-            dictionaryTerms.put(word.toLowerCase(), dic[0]);
-            System.out.println("Loading dictionary : Word: " + word + "\tAspect: " + dic[0]);
-        }
-        br.close();
-        fr.close();
-        System.out.println("Dictionary Loaded");
-    }
+//    public void loadDictionaryManual() throws IOException {
+//        File fileAnnotation = new File(filePathDictionary);
+//        FileReader fr = new FileReader(fileAnnotation);
+//        BufferedReader br = new BufferedReader(fr);
+//        String line;
+//
+//        while ((line = br.readLine()) != null) {
+//            String[] dic = line.split("[ \t]");
+//            String word = line.substring(line.indexOf(" ") + 1);
+//            dictionaryTerms.put(word.toLowerCase(), dic[0]);
+//            System.out.println("Loading dictionary : Word: " + word + "\tAspect: " + dic[0]);
+//        }
+//        br.close();
+//        fr.close();
+//        System.out.println("Dictionary Loaded");
+//    }
 
     // this method reads reviews one by one and pass reviews for automation
     public void readReviews() throws IOException {

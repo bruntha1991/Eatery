@@ -19,7 +19,7 @@ public class Utility {
 
     public static void print(ArrayList<Pair> pairs, Matrix matrix) {
         for (int i = 0; i <pairs.size(); i++) {
-            System.out.printf("%-20s %-20s \n", pairs.get(i).getKey(),matrix.get(i,0));
+            System.out.printf("%-20s %-20s \n", pairs.get(i).getKey(),Math.round(matrix.get(i,0) * factor) / factor);
 
         }
     }
