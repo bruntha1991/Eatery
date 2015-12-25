@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 public class Convertion {
 
     final static String filePathToBeConverted = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review_100_D_Review.txt";  //the file path that need to be annotated
+            "u_14.txt";  //the file path that need to be annotated
     final static String filePathAnnotation = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review_100_D_Review.ann";  //annotation of the file that need to be annotated
+            "u_14.ann";  //annotation of the file that need to be annotated
     final static String filePathConverted = "/home/bruntha/Documents/Softwares/brat-v1.3_Crunchy_Frog/data/Eatery/" +
-            "review_100_D_Review_NLP.txt";
+            "u_14_NLP.txt";
 
     final static String testSTRING = "\"I loved  <START:Restaurant> this   place   <END>  and I can't believe it was just by accident that I discovered it. I was walking by on St Catherine's last night and saw a guy making crepes in a window. I thought to myself, this is a  <START:Restaurant> place <END>  to go for  <START:  food  > breakfast <END>  tomorrow and that's what I did today. For less than $11, I got a giant  <START:F_Drinks> coffee <END>  and a  <START:P_F_FI_Size> huge <END>   <START:F_FoodItem> spinach <END>  and  <START:F_FoodItem> egg   crepe   <END> . I arrived at 8am and  <START:Restaurant> there <END>  were hardly any customers. I was surprised and then concerned but not for long.  <START:Service> service <END>  was  <START:P_Service> fast <END>  and  <START:P_Service> polite <END> , and the  <START:F_FoodItem> crepe <END>  was  <START:P_F_FI_Taste> perfect <END> ! I plan to come back tomorrow and try a  <START:F_FoodItem> crepe <END>  from their sweet  <START:S_Menu> menu <END> - <START:F_FoodItem> strawberries <END>  and  <START:F_FoodItem> dark chocolate <END> . Mmm!\"\n";
 
@@ -128,7 +128,13 @@ public class Convertion {
                 }
 
                 if (!open.equals(""))
-                    line = open + line.substring(oldIndex, line.length());
+                    try {
+                        line = open + line.substring(oldIndex, line.length());
+                    } catch (StringIndexOutOfBoundsException e) {
+                        System.out.println(e.getMessage());
+                    }finally {
+
+                    }
             }
             for (int i = 0; i < loopTimes; i++) {
                 line = removeInnerTags(line);
